@@ -13,13 +13,18 @@ class Monstres():
         self.L=monster[10]
         self.b=int(monster[11])
 
-tab_obj =[]
+    # au print d'un objet str affiche la valeur de return
+    def __str__(self):
+        return f"{self.nom}:{self.poids}"
+
+    def feed(self,P):
+        new_p=self.poids+self.a*P+self.b        
+        self.poids=new_p
+tab_obj=[]        
 
 for monster in monsters:
     objM=Monstres(monster) 
     tab_obj.append(objM)
-
-
 #
 # @brief Recherche le monstre le plus leger pour une lettre donnee
 #
@@ -42,120 +47,46 @@ def findMonster(lettre):
                 min_p = p
                 min_i = idx
     return(min_i)
-      
+#
+# @brief Change les poids de tous les objets monstres
+#    
 def changePoids():
+    #parcours la liste de nourriture
     for i in range (0,len(foods),2):
+        #récupère le poids de la nourriture
         P=int(foods[i+1])
-        #print("search letter ", foods[i])
-        #if foods[i]=="W":
-        minW=findMonster(foods[i])
-        #print(minW)
-        monstre=tab_obj[minW]
-        new_p=monstre.poids+monstre.a*P+monstre.b        
-        monstre.poids=new_p
-        tab_obj[minW]=monstre
+        #on recherche l'index du monstre pour ce type de nourriture
+        idx=findMonster(foods[i])
+        #on récupère le monstre à cet index
+        monstre=tab_obj[idx]
+        # le monstre se nourrit et grossit
+        monstre.feed(P)
+
+#
+# @brief Affiche le plus gros monstre après nourissage
+#  
+       
+def printResult():
     temp=0
     x=0
-    for t in tab_obj:
-        if t.poids>temp:
-            temp=t.poids
-            x=t
-    print(f"{x.nom}:{x.poids}")
-changePoids()
-
-for t in tab_obj:
-    print(t.nom, ' ', t.poids)
-
-def plop():
-    #monster = monsters[minW]
-    #pW = findLetter("W") 
-    #pG= findLetter("G") 
-    #pF= findLetter("F")
-    #pR = findLetter("R")
+    for m in tab_obj:
+        if m.poids>temp:
+            temp=m.poids
+            x=m
+    # appelle la méthode magique str pour le monstre x
+    print(x)
     
+#
+# @brief Boucle principale
+#  
+def resolution():
+    changePoids()
+    printResult()
 
-
-
-
-    print(monsters)
-    #findLetter("F")
-    #findLetter("G")
-    #findLetter("R")
-    #print(monster)
-"""  
-import operator
-dicoPW={}
-dicoPR={}
-dicoPG={}
-dicoPF={}
-dicoW={}
-dicoG={}
-dicoR={}
-dicoF={}
-liste=list(foods)
-def bouclePoids(dico,dicoP):
-     for cle, valeur in sorted(dicoP.items(),key=lambda t:t[0]):
-            print(sorted(dicoP.items(),key=lambda t:t[0]))
-            min_key = min(dicoP, key=dicoP.get)
-            min_key = min(dicoP, key=dicoP.get)
-            print(dicoP[min_key])    
-            P=int(liste[i+1])
-            a=int(dico[min_key][0])
-            b=int(dico[min_key][2])
-            dicoP[min_key]=dicoP[min_key]+a*P+b
-            print(min_key,dicoP[min_key])
-
-
-
-
-for monstre in monsters:
-    if monstre[10]=="W":
-        dicoPW[monstre.split(":")[0]]=int(monstre.split(":")[1])
-        dicoW[monstre.split(":")[0]]=monstre.split(":")[2]
-    if monstre[10]=="G":
-        dicoPG[monstre.split(":")[0]]=int(monstre.split(":")[1])
-        dicoG[monstre.split(":")[0]]=monstre.split(":")[2]
-    if monstre[10]=="R":
-        dicoPR[monstre.split(":")[0]]=int(monstre.split(":")[1])
-        dicoR[monstre.split(":")[0]]=monstre.split(":")[2]
-    if monstre[10]=="F":
-        dicoPF[monstre.split(":")[0]]=int(monstre.split(":")[1])
-        dicoF[monstre.split(":")[0]]=monstre.split(":")[2]
-
-i=0
-for i in range(len(liste)-1):
-        if liste[i]=="W":
-            bouclePoids(dicoW,dicoPW)
-        if liste[i]=="G":
-            bouclePoids(dicoG,dicoPG)
-        if liste[i]=="R":
-            bouclePoids(dicoR,dicoPR)
-        if liste[i]=="F":
-            bouclePoids(dicoF,dicoPF)
-
-        i=i+2
-
-dicoFinal={}
-dicoFinal.update(dicoPR)
-dicoFinal.update(dicoPW)
-dicoFinal.update(dicoPG)
-dicoFinal.update(dicoPF)
-
-max_key = max(dicoFinal, key=dicoFinal.get)           
-print(f"{max_key}:{max(dicoFinal.values())}") 
+resolution()
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-#print(poidsG+weight)
-"""
