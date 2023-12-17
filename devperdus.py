@@ -50,22 +50,14 @@ def recup3Distances():
     sauveurs=""
     #calcule distance des avions
     for avion in tab_obj:
-        distance=avion.calculeDistances(islandX,islandY)  
-        tab_dis.append(distance)
-    #tri tableau distances
-    tab_dis.sort()
-    #conservation 3 plus petites distances
-    min_dis=tab_dis[:3]
-    print(min_dis)
-
-    for avion in tab_obj:
-        print(avion.distance)
-        #comparaisons distances aves 3 plus petites
-        if avion.distance in min_dis:
-            #création chaine avec codes avion selon distances
-            sauveurs=sauveurs+avion.code
-            print(sauveurs)
-
+        avion.calculeDistances(islandX,islandY)  
+    #tri tableau selon distances
+    tab_obj.sort(key=lambda x: x.distance)
+    for i in range(3):
+        #création chaine avec codes avion selon distances
+        sauveurs=sauveurs+tab_obj[i].code
+    print(sauveurs)
+    print(tab_obj[0:3].strip(","))
 recup3Distances()
 
 
