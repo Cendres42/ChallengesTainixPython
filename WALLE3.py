@@ -2,21 +2,19 @@
 map = [1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,0,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,0,0,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,0,1,0,1,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1]
 # NE PAS TOUCHER
 
-import numpy as np
 #construction matrice
-def createMatColonne(a):
+def createMatLigne(p):
     tab=[]
-    for i in range(a,225,15):
+    for i in range(p,p+15,1):
         tab.append(map[i])
     return tab
 
-map_ar=[]
+mat_array=[]
+for p in range(0,225,15):
+    tab=createMatLigne(p)
+    mat_array.append(tab)
+print(mat_array)
 
-for i in range(15):
-    tab=createMatColonne(i)
-    map_ar.append(tab)
-mat_arr=np.array(map_ar)
-mat_array=mat_arr.T
 
 def case(i,j,p):
     dessous=False
@@ -27,20 +25,26 @@ def case(i,j,p):
     return dessous
 
 def dessous(i,j,p):
-    if mat_array[i+1][j]>=p :
+    if i>=14:
+        return 0
+    elif mat_array[i+1][j]>=p :
         v=1
     else:
         v=0
     return v 
 
 def dessus(i,j,p):
-    if mat_array[i-1][j]>=p:
+    if i<1:
+        return 0
+    elif mat_array[i-1][j]>=p:
         v=1
     else:
         v=0
     return v
 
 def gauche(i,j,p):
+    if j<1:
+        return 0
     if  mat_array[i][j-1]>=p:
         v=1
     else:
@@ -50,7 +54,7 @@ def gauche(i,j,p):
 def droite(i,j,p):
     if j>=14:
         return 0
-    if mat_array[i][j+1]>=p:
+    elif mat_array[i][j+1]>=p:
         v=1
     else:
         v=0
@@ -68,21 +72,10 @@ def monterEtage(p):
             verif_dessous=case(i,j,p)
             if verif_dessous==True :
                 vDroite=droite(i,j,p)
-                if j>0:
-                    vGauche=gauche(i,j,p)
-                else:
-                    vGauche=0
-                if i<14:
-                    vDessous=dessous(i,j,p)
-                else:
-                    vDessous=0
-                if i>0:
-                    vDessus=dessus(i,j,p)
-                else:
-                    vDessus=0
-
+                vGauche=gauche(i,j,p)
+                vDessous=dessous(i,j,p)
+                vDessus=dessus(i,j,p)
                 v=vDroite+vGauche+vDessous+vDessus
-
                 if v>=3:
                     mat_array[i][j]=p+1
                     new_etage+=1
@@ -98,4 +91,4 @@ while new_etage>0:
     new_etage=monterEtage(p)
     p=p+1
 print(valueF*(p-1))
-#print(mat_array)
+print(mat_array)
