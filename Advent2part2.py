@@ -6,12 +6,12 @@ class Tirage():
         self.bleu=0
         self.rouge=0
         self.resultat=0
+        
 tirage_sets=[]                  
 # class game pour récupérer chaque ligne du fichier txt
 class Game():
     def __init__(self,line):
         premier_split=line.split(":")
-        
         # récupération des n tirages par jeu dans objet tirage
         listes_jeux=premier_split[1]
         des=listes_jeux.replace(";","")
